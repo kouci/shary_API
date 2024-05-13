@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  shary_back:
+    image: shary_back
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    # - ./.mvn/:/app/.mnv/
+    #- ./pom.xml:/app/pom.xml
+    #- .src/:/app/src/
+
+
+
+  mysql:
+    image: mysql:8.3
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shary
+      MYSQL_USER: anisse
+      MYSQL_PASSWORD: passwd
+    ports:
+      - "3308:3308"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8081:80" # Choisir le port de votre choix pour l'accès à phpMyAdmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root # Assurez-vous que c'est le même mot de passe que celui défini pour votre conteneur MySQL
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
