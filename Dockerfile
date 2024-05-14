@@ -4,7 +4,13 @@ WORKDIR /app
 
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+
+# Donnez les permissions d'exécution au fichier mvnw
+RUN chmod +x mvnw
+
+# Exécutez la commande mvnw
 RUN ./mvnw dependency:go-offline
+
 RUN apt-get update && apt-get install -y dos2unix
 
 COPY src ./src
