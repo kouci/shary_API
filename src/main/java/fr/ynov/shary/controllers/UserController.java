@@ -3,7 +3,7 @@ package fr.ynov.shary.controllers;
 import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.Response;
 import fr.ynov.shary.models.User;
-import fr.ynov.shary.services.UserServices;
+import fr.ynov.shary.services.UserService;
 import fr.ynov.shary.validator.UserValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static java.util.List.of;
 public class UserController {
 
     @Autowired
-    private UserServices userService;
+    private UserService userService;
 
     @Autowired
     private ModelMapper modelMapper;

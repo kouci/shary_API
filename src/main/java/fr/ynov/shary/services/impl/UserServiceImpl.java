@@ -1,9 +1,8 @@
 package fr.ynov.shary.services.impl;
 
-import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.User;
 import fr.ynov.shary.repository.UserRepository;
-import fr.ynov.shary.services.UserServices;
+import fr.ynov.shary.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements UserServices {
+public class UserServiceImpl implements UserService {
 
 
     @Autowired
