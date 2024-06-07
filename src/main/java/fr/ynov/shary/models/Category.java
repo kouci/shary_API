@@ -25,12 +25,12 @@ public class Category {
     @Getter
     @Setter
     @Column(name ="category_name")
-    private String category_name;
+    private String categoryName;
 
     @Getter
     @Setter
     @Column(name = "category_description")
-    private String category_description;
+    private String categoryDescription;
 
     @Getter
     @Setter
@@ -56,5 +56,5 @@ public class Category {
     private Set<Category> categories = new HashSet<>();
 
     @ManyToMany(mappedBy = "categories")
-    Set<Comptence> competences;
+    Set<Competence> competences;
 }

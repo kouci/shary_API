@@ -59,7 +59,7 @@ public class User {
     @Getter
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) @JoinTable(name="user_competences",joinColumns = @JoinColumn(name="user_id") ,
             inverseJoinColumns = @JoinColumn(name="compt_id"))
-    private List<Comptence> competences;
+    private List<Competence> competences;
 
     @Getter
     @Setter

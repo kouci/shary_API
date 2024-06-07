@@ -1,13 +1,13 @@
 package fr.ynov.shary.services;
 
-import fr.ynov.shary.models.Comptence;
+import fr.ynov.shary.models.Competence;
 
 public interface CompetenceService {
-    public long createCompetence(Comptence comptence);
+    public long createCompetence(Competence competence);
 
     public void deleteCompetence(long id);
 
-    public long updateCompetence(Comptence comptence);
+    public long updateCompetence(Competence competence);
 
-    public Comptence getCompetence(long id);
+    public Competence getCompetence(long id);
 }

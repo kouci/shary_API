@@ -16,25 +16,25 @@ import java.util.Set;
 @Table(name = "competences")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comptence {
+public class Competence {
 
     @Getter
     @Setter
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
-    private long compt_id;
+    private long comptence_id;
 
     @Getter
     @Setter
     @NotEmpty(message = "Name may not be empty")
     @Column(name = "compt_name")
-    private String compt_name;
+    private String comptenceName;
 
     @Getter
     @Setter
     @NotEmpty(message = "Name may not be empty")
     @Column(name = "comp_description")
-    private String compt_description;
+    private String comptenceDescription;
 
     @Getter
     @Setter
