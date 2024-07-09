@@ -4,15 +4,17 @@ import fr.ynov.shary.models.Category;
 import fr.ynov.shary.models.UserLog;
 import fr.ynov.shary.repository.UserLogRepository;
 import fr.ynov.shary.services.UserLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 public class UserLogServiceImpl implements UserLogService {
 
 
+    @Autowired
     private UserLogRepository userLogRepository;
     @Override
     public long createUserLog(UserLog userLog) {

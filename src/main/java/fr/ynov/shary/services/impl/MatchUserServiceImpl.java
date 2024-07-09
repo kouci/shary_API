@@ -3,9 +3,15 @@ package fr.ynov.shary.services.impl;
 import fr.ynov.shary.models.MatchUser;
 import fr.ynov.shary.repository.MatchUserRepository;
 import fr.ynov.shary.services.MatchUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class MatchUserServiceImpl  implements MatchUserService {
 
+    @Autowired
     private MatchUserRepository matchUserRepository;
     @Override
     public long createMatchUser(MatchUser matchUser) {
@@ -27,5 +33,10 @@ public class MatchUserServiceImpl  implements MatchUserService {
     @Override
     public MatchUser getMatchUser(long id) {
         return matchUserRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<MatchUser> getAll() {
+        return matchUserRepository.findAll();
     }
 }
