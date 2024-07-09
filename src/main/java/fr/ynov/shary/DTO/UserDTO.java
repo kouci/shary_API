@@ -23,19 +23,23 @@ public class UserDTO {
     @Setter
     @NotEmpty(message = "Email may not be empty")
     private String email;
+
+    @Getter
+    @Setter
+    @NotEmpty(message = "Roles may not be empty")
     private List<Role> roles;
 
-    public UserDTO(String username, String password, String email, List<Role> role) {
+    public UserDTO(String username, String password, String email, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roles = role;
+        this.roles = roles;
     }
 
     public UserDTO() {
     }
 
-    public List<Role> getRole() {
+    public List<Role> getRoles() {
         return roles;
     }
 }
