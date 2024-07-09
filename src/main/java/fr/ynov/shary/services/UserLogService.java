@@ -1,6 +1,9 @@
 package fr.ynov.shary.services;
 
 import fr.ynov.shary.models.UserLog;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 public interface UserLogService {
 
@@ -11,4 +14,6 @@ public interface UserLogService {
     public long updateUserLog(UserLog userLog);
 
     public UserLog getUserLog(long id);
+
+    public List<UserLog>  getAllUserLogs();
 }

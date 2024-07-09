@@ -1,9 +1,15 @@
 package fr.ynov.shary.services.impl;
 
+import fr.ynov.shary.models.Category;
 import fr.ynov.shary.models.UserLog;
 import fr.ynov.shary.repository.UserLogRepository;
 import fr.ynov.shary.services.UserLogService;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
+@Service
 public class UserLogServiceImpl implements UserLogService {
 
 
@@ -28,5 +34,10 @@ public class UserLogServiceImpl implements UserLogService {
     @Override
     public UserLog getUserLog(long id) {
         return  userLogRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<UserLog> getAllUserLogs() {
+        return userLogRepository.findAll();
     }
 }

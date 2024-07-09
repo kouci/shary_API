@@ -3,11 +3,14 @@ package fr.ynov.shary.services.impl;
 
 import fr.ynov.shary.models.Category;
 
+import fr.ynov.shary.models.User;
 import fr.ynov.shary.repository.CategoryRepository;
 
 import fr.ynov.shary.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -35,6 +38,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategory(long id) {
         return categoryRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
 }
