@@ -47,8 +47,8 @@ public class ComptetenceController {
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateUser(@RequestBody CompetenceDTO competenceDTO) {
-        Long competenceId = competenceService.updateCompetence(modelMapper.map(competenceDTO, Competence.class));
+    public ResponseEntity<Response> updateUser(@RequestBody Competence competence) {
+        Long competenceId = competenceService.updateCompetence(competence);
         return ResponseEntity.ok(Response.builder()
                 .data(Map.of("id", competenceId))
                 .message("Competance updated successfully")

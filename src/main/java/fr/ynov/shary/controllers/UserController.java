@@ -63,14 +63,18 @@ public class UserController {
     }
 
     @PutMapping
-    public long updateUser(@RequestBody UserDTO userDto) {
-        return userService.updateUser(modelMapper.map(userDto, User.class));
+    public ResponseEntity<Response> updateUser(@RequestBody User user) {
+        Long userId = userService.updateUser(user);
+        return ResponseEntity.ok(Response.builder()
+                .data(Map.of("id", userId))
+                .message("User updated successfully")
+                .status(HttpStatus.OK)
+                .build());
     }
 
     @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
-
 
 }

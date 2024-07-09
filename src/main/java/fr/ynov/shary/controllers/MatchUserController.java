@@ -49,8 +49,8 @@ public class MatchUserController {
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateUser(@RequestBody MatchUserDTO matchUserDTO) {
-        Long userId = matchUserService.updateMatchUser(modelMapper.map(matchUserDTO, MatchUser.class));
+    public ResponseEntity<Response> updateUser(@RequestBody MatchUser matchUser) {
+        Long userId = matchUserService.updateMatchUser(matchUser);
         return ResponseEntity.ok(Response.builder()
                 .data(Map.of("id", userId))
                 .message("match user updated successfully")
