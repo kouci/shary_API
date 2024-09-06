@@ -95,7 +95,7 @@ class UserServiceImplTest {
         String username = "testUser";
         User user = new User();
         user.setUsername(username);
-        when(userRepository.findByUsername(username)).thenReturn(user);
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
         // When
         User retrievedUser = userService.getUserByUsername(username);

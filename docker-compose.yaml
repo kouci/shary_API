@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  shary_back:
-    image: shary_back
+  shary:
+    image: shary
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,11 +10,11 @@ services:
       - "8080:8080"
     volumes:
       - .:/app
-    # - ./.mvn/:/app/.mnv/
-    #- ./pom.xml:/app/pom.xml
-    #- .src/:/app/src/
-
-
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - logstash
+      - prometheus
 
   mysql:
     image: mysql:8.3
@@ -28,16 +28,67 @@ services:
       - "3308:3308"
     volumes:
       - mysql_data:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - "8081:80" # Choisir le port de votre choix pour l'accès à phpMyAdmin
+      - "8081:80"
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: root # Assurez-vous que c'est le même mot de passe que celui défini pour votre conteneur MySQL
+      MYSQL_ROOT_PASSWORD: root
     depends_on:
       - mysql
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.10.1
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  angular:
+    build:
+      context: ./front/shary-front/
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - shary  # Si nécessaire
+
 volumes:
   mysql_data:
+  es_data:
