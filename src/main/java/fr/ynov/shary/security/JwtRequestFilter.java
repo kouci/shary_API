@@ -37,6 +37,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             "/v3/api-docs",
             "/v3/api-docs/swagger-config",
             "/actuator/prometheus",
+            "/api/competences/add",
+            "/api/competences",
             // Ajoutez ici toutes les autres routes publiques
     };
 

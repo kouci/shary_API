@@ -27,6 +27,7 @@ public class CategoryController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Response> createCategory(@RequestBody CategoryDTO categoryDto) {
         Long categoryId = categoryService.createCategory(modelMapper.map(categoryDto, Category.class));
@@ -38,6 +39,7 @@ public class CategoryController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();

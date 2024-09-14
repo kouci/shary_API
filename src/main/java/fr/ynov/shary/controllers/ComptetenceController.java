@@ -23,6 +23,7 @@ public class ComptetenceController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Response> createUser(@RequestBody CompetenceDTO competenceDTO) {
 
@@ -36,16 +37,19 @@ public class ComptetenceController {
     }
 
 
+    @CrossOrigin(origins = "*")
     @GetMapping
-    public List<Competence> getAllUsers() {
+    public List<Competence> getAllCompetences() {
         return ResponseEntity.ok(competenceService.getAll()).getBody();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Competence getCompetence(@PathVariable long id) {
         return ResponseEntity.ok(competenceService.getCompetence(id)).getBody();
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping
     public ResponseEntity<Response> updateUser(@RequestBody Competence competence) {
         Long competenceId = competenceService.updateCompetence(competence);
@@ -56,6 +60,7 @@ public class ComptetenceController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteUser(@PathVariable long id) {
         competenceService.deleteCompetence(id);
@@ -63,6 +68,12 @@ public class ComptetenceController {
                 .message("Competance deleted successfully")
                 .status(HttpStatus.OK)
                 .build());
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/add")
+    public void addCompetencesIfEmpty() {
+        competenceService.addCompetencesIfEmpty();
     }
 
 

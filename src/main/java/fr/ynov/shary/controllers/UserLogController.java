@@ -27,6 +27,7 @@ public class UserLogController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Response> createCategory(@RequestBody UserLogDTO userLogDto) {
         Long categoryId = userLogService.createUserLog(modelMapper.map(userLogDto, UserLog.class));
@@ -38,6 +39,7 @@ public class UserLogController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public ResponseEntity<List<UserLogDTO>> getAllUserLogs() {
         List<UserLog> userLogs = userLogService.getAllUserLogs();

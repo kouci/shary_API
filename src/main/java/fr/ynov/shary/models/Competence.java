@@ -38,7 +38,6 @@ public class Competence {
 
     @Getter
     @Setter
-    @NotEmpty(message = "Name may not be empty")
     @Column(name = "archived")
     private Boolean archived;
 

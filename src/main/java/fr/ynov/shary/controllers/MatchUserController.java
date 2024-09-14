@@ -25,6 +25,7 @@ public class MatchUserController {
     private ModelMapper modelMapper;
 
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Response> createUser(@RequestBody MatchUserDTO matchUserDTO, BindingResult bindingResult) {
 
@@ -38,16 +39,19 @@ public class MatchUserController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public List<MatchUser> getAllUsers() {
         return ResponseEntity.ok(matchUserService.getAll()).getBody();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public MatchUser getMatchUser(@PathVariable long id) {
         return ResponseEntity.ok(matchUserService.getMatchUser(id)).getBody();
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping
     public ResponseEntity<Response> updateUser(@RequestBody MatchUser matchUser) {
         Long userId = matchUserService.updateMatchUser(matchUser);
@@ -58,6 +62,7 @@ public class MatchUserController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteUser(@PathVariable long id) {
         matchUserService.deleteMatchUser(id);

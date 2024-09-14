@@ -40,10 +40,15 @@ public class User implements UserDetails {
     private String password;
 
     @Getter
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Setter
     @NotEmpty(message = "Email may not be empty")
     private String email;
+
+    @Getter
+    @Setter
+    @Column(name = "linkedin")
+    private String linkedin;
 
     @Getter
     @Setter
@@ -56,16 +61,27 @@ public class User implements UserDetails {
     private Set<MatchUser> accepterMatch = new HashSet<>();
 
     @Getter
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="user_role",joinColumns = @JoinColumn(name="user_id") ,
-            inverseJoinColumns = @JoinColumn(name="role_id"))
+    @Setter
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    // Compétences acquises par l'utilisateur
     @Getter
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="user_competences",joinColumns = @JoinColumn(name="user_id") ,
-            inverseJoinColumns = @JoinColumn(name="compt_id"))
+    @Setter
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_competences", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "compt_id"))
     private List<Competence> competences;
+
+    // Compétences que l'utilisateur souhaite acquérir
+    @Getter
+    @Setter
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_wanted_competences", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "compt_id"))
+    private List<Competence> wantedCompetences;
 
     @Getter
     @Setter

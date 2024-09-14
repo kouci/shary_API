@@ -30,6 +30,7 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+    @CrossOrigin(origins = "*")
     @PostMapping
     public ResponseEntity<Response> createUser(@RequestBody UserDTO userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
@@ -37,7 +38,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(Response.builder().message("Invalid user").status(HttpStatus.BAD_REQUEST).build());
         }
 
-        Long userId = userService.createUser(modelMapper.map(userDto, User.class));
+        Long userId = userService.createUser(userDto);
 
         return ResponseEntity.ok(Response.builder()
                 .data(Map.of("id", userId))
@@ -47,24 +48,28 @@ public class UserController {
     }
 
 
+    @CrossOrigin(origins = "*")
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public User getUser(@PathVariable long id) {
         return userService.getUser(id);
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
     }
 
-    @PutMapping
-    public ResponseEntity<Response> updateUser(@RequestBody User user) {
-        Long userId = userService.updateUser(user);
+    @CrossOrigin(origins = "*")
+    @PutMapping("/{id}")
+    public ResponseEntity<Response> updateUser(@PathVariable long id, @RequestBody UserDTO user) {
+        Long userId = userService.updateUser(user,id);
         return ResponseEntity.ok(Response.builder()
                 .data(Map.of("id", userId))
                 .message("User updated successfully")
@@ -72,6 +77,7 @@ public class UserController {
                 .build());
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);

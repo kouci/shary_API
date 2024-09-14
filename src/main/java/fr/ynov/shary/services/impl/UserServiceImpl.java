@@ -1,6 +1,9 @@
 package fr.ynov.shary.services.impl;
 
+import fr.ynov.shary.DTO.UserDTO;
+import fr.ynov.shary.models.Competence;
 import fr.ynov.shary.models.User;
+import fr.ynov.shary.repository.CompetenceRepository;
 import fr.ynov.shary.repository.UserRepository;
 import fr.ynov.shary.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,18 +29,33 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public long createUser(User user) {
-        logger.info("Creating user: {}", user);
+    @Autowired
+    private CompetenceRepository competenceRepository;
 
-        // Encodage du mot de passe avant de sauvegarder l'utilisateur
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+    @Override
+    public long createUser(UserDTO userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setLinkedin(userDto.getLinkedin());
+        // Mappage des compétences
+        List<Competence> competences = userDto.getCompetences().stream()
+                .map(competence -> competenceRepository.findById(competence.getComptence_id()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        user.setCompetences(competences);
+
+        List<Competence> wantedCompetences = userDto.getWantedCompetences().stream()
+                .map(competence -> competenceRepository.findById(competence.getComptence_id()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        user.setWantedCompetences(wantedCompetences);
 
         User savedUser = userRepository.save(user);
-        logger.info("User created with ID: {}", savedUser.getId());
         return savedUser.getId();
     }
+
 
     @Override
     public void deleteUser(long id) {
@@ -45,9 +65,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long updateUser(User user) {
+    public long updateUser(UserDTO user, Long id) {
         logger.info("Updating user: {}", user);
-        User updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(this.getUserByUserDto(user, id));
         logger.info("User updated with ID: {}", updatedUser.getId());
         return updatedUser.getId();
     }
@@ -94,5 +114,28 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         logger.info("Number of users found: {}", users.size());
         return users;
+    }
+
+
+    private User getUserByUserDto(UserDTO userDto, Long id) {
+        User user = userRepository.findById(id).orElse(new User());
+        user.setUsername(userDto.getUsername());
+        //user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setLinkedin(userDto.getLinkedin());
+
+        // Mappage des compétences
+        List<Competence> competences = userDto.getCompetences().stream()
+                .map(competence -> competenceRepository.findById(competence.getComptence_id()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        user.setCompetences(competences);
+
+        List<Competence> wantedCompetences = userDto.getWantedCompetences().stream()
+                .map(competence -> competenceRepository.findById(competence.getComptence_id()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        user.setWantedCompetences(wantedCompetences);
+        return user;
     }
 }

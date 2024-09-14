@@ -14,4 +14,6 @@ public interface CompetenceService {
     public Competence getCompetence(long id);
 
     public List<Competence> getAll();
+
+    public void addCompetencesIfEmpty();
 }

@@ -2,10 +2,8 @@ package fr.ynov.shary.controllers;
 
 import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.Response;
-import fr.ynov.shary.models.User;
 import fr.ynov.shary.models.AuthResponse;
 import fr.ynov.shary.models.AuthRequest;
-import fr.ynov.shary.repository.UserRepository;
 import fr.ynov.shary.security.JwtTokenUtil;
 import fr.ynov.shary.services.CustomUserDetailsService;
 import fr.ynov.shary.services.UserService;
@@ -18,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,11 +44,12 @@ public class AuthController {
     private ModelMapper modelMapper;
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {
 
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(),   authRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
@@ -59,10 +57,12 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
+        final Long id = userService.getUserByUsername(authRequest.getUsername()).getId();
 
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.ok(new AuthResponse(jwt, id));
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
@@ -70,7 +70,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Response.builder().message("Invalid user").status(HttpStatus.BAD_REQUEST).build());
         }
 
-        Long userId = userService.createUser(modelMapper.map(userDto, User.class));
+        Long userId = userService.createUser(userDto);
 
         return ResponseEntity.ok(Response.builder()
                 .data(Map.of("id", userId))

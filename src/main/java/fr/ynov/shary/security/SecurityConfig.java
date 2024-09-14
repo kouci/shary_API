@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/actuator/prometheus").permitAll()
                         .requestMatchers("/actuator/prometheus/**").permitAll()
+                        .requestMatchers("/api/competences/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
