@@ -1,5 +1,6 @@
 package fr.ynov.shary.services;
 
+import fr.ynov.shary.DTO.ChangePasswordDTO;
 import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.User;
 
@@ -20,4 +21,6 @@ public interface UserService {
 
 
     public List<User> getAllUsers();
+
+    public boolean changePassword(ChangePasswordDTO dto);
 }

@@ -1,5 +1,6 @@
 package fr.ynov.shary.services.impl;
 
+import fr.ynov.shary.DTO.ChangePasswordDTO;
 import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.Competence;
 import fr.ynov.shary.models.User;
@@ -137,5 +138,15 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
         user.setWantedCompetences(wantedCompetences);
         return user;
+    }
+
+    public boolean changePassword(ChangePasswordDTO dto) {
+        User user = userRepository.findById(dto.getId()).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+        return true;
     }
 }

@@ -1,9 +1,11 @@
 package fr.ynov.shary.controllers;
 
+import fr.ynov.shary.DTO.ChangePasswordDTO;
 import fr.ynov.shary.DTO.UserDTO;
 import fr.ynov.shary.models.Response;
 import fr.ynov.shary.models.AuthResponse;
 import fr.ynov.shary.models.AuthRequest;
+import fr.ynov.shary.models.User;
 import fr.ynov.shary.security.JwtTokenUtil;
 import fr.ynov.shary.services.CustomUserDetailsService;
 import fr.ynov.shary.services.UserService;
@@ -78,4 +80,32 @@ public class AuthController {
                 .status(HttpStatus.CREATED)
                 .build());
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO dto) throws Exception {
+        User user = userService.getUser(dto.getId());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(),   dto.getOldPassword())
+            );
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.badRequest().body(Response.builder()
+                    .message("Incorrect password")
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build());
+        }
+        boolean isSuccess = userService.changePassword(dto);
+        if (!isSuccess) {
+            return ResponseEntity.badRequest().body(Response.builder()
+                    .message("Failed to change password")
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build());
+        }
+        return ResponseEntity.ok(Response.builder()
+                .message("Password changed successfully")
+                .status(HttpStatus.OK)
+                .build());
+    }
+
 }
